@@ -1,31 +1,45 @@
 {
-  "id": "module",
-  "title": "New Module",
-  "description": "",
+  "id": "ceane-talent",
+  "title": "Talent Character Sheet for D&D 5e",
+  "description": "Character sheet support for the Talent class from MCDM's The Talent and Psionics supplement for 5e",
   "version": "#{VERSION}#",
   "library": "false",
   "manifestPlusVersion": "1.2.0",
   "compatibility": {
     "minimum": 10,
-    "verified": 10,
-    "maximum": 11
+    "verified": 11
   },
+  "type": "module",
+  "author": "Ceane",
   "authors": [
     {
-      "name": "The League of Extraordinary FVTT Developers",
-      "url": "https://github.com/League-of-Foundry-Developers",
-      "discord": "discordID#0001"
+      "name": "Ceane",
+      "reddit": "/u/Ceane",
+      "discord": "ceanec"
     }
   ],
   "relationships": {
-    "systems": [],
-    "requires": []
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "compatibility": {
+          "verified": "2.3.0"
+        }
+      }
+    ],
+    "requires": [
+      {
+        "id": "lib-wrapper",
+        "type": "module",
+        "compatibility": {
+          "verified": "1.12.13.0"
+        }
+      }
+    ]
   },
   "esmodules": [
     "scripts/module.js"
-  ],
-  "scripts": [
-    "scripts/lib/lib.js"
   ],
   "styles": [
     "styles/module.css"
@@ -40,12 +54,42 @@
   "url": "#{URL}#",
   "manifest": "#{MANIFEST}#",
   "download": "#{DOWNLOAD}#",
-  "license": "LICENSE",
   "readme": "README.md",
   "media": [
     {
-      "type": "icon",
-      "url": "https://avatars2.githubusercontent.com/u/71292812?s=400&u=ccdb4eeb7abf551ca8f314e5a9bfd0479a4d3d41&v=4"
+      "type": "cover",
+      "url": "./images/cover.png",
+      "caption": "The strain tracker"
+    },
+    {
+      "type": "screenshot",
+      "url": "https://raw.githubusercontent.com/CeaneC/FoundryVTT-Talent/master/images/vanilla-strain3.png",
+      "caption": "The Strain tracker on the Vanilla character sheet"
+    },
+    {
+      "type": "screenshot",
+      "url": "https://raw.githubusercontent.com/CeaneC/FoundryVTT-Talent/master/images/vanilla-spellbook.png",
+      "caption": "Powers as pseudo-spells on the Vanilla character sheet"
+    },
+    {
+      "type": "screenshot",
+      "url": "https://raw.githubusercontent.com/CeaneC/FoundryVTT-Talent/master/images/power-preparation.png",
+      "caption": "Setting the Spell Preparation Mode to Talent Power"
+    },
+    {
+      "type": "screenshot",
+      "url": "https://raw.githubusercontent.com/CeaneC/FoundryVTT-Talent/master/images/vanilla-manifest.png",
+      "caption": "Manifesting a Power, and choosing the Order"
+    },
+    {
+      "type": "screenshot",
+      "url": "https://raw.githubusercontent.com/CeaneC/FoundryVTT-Talent/master/images/t5e-strain3.png",
+      "caption": "The Strain tracker on the Tidy5e character sheet"
+    },
+    {
+      "type": "screenshot",
+      "url": "https://raw.githubusercontent.com/CeaneC/FoundryVTT-Talent/master/images/t5e-spellbook.png",
+      "caption": "Powers as pseudo-spells on the Tidy5e character sheet"
     }
   ]
 }

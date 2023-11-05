@@ -118,8 +118,9 @@ jobs:
             `# The files that will be included.` \
             module.json                          \
             README.md                            \
-            LICENSE                              \
-            templates                            \
+            CHANGELOG.md                         \
+            images                               \
+            templates/                           \
             scripts/                             \
             styles/                              \
             packs/                               \

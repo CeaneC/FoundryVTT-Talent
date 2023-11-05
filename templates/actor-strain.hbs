@@ -1,0 +1,54 @@
+<div class="tab strain" data-tab="strain" >
+{{!-- <div style="border-top: 2px groove #eeede0; overflow-y: scroll; height: 50%"> --}}
+    <div>
+        <ul class="attributes flexrow" style="flex-wrap:wrap-reverse">
+            {{#each resources}}
+                <li class="attribute resource">
+                    <h4 class="attribute-name box-title">{{localize (concat "ceane-talent.StrainLabels." @key)}}</h4>
+                    <div class="attribute-value">
+                        <input type="number"
+                        name="flags.ceane-talent.strain.{{@key}}"
+                        value="{{this}}"
+                        min="0"
+                        max="{{plus this ../remaining_strain}}" />
+                    </div>
+                </li>
+            {{/each}}
+            <li class="attribute resource" style="flex:1 0 100%">
+                <h4 class="attribute-name box-title">{{localize "ceane-talent.StrainLabels.total"}}</h4>
+                <div class="attribute-value">
+                    <input type="number" min="0" value="{{total_strain}}" disabled />
+                    <span class="sep"> / </span>
+                    <input type="number" value="{{max_strain}}" disabled>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <table>
+        <tbody>
+            {{#each rows as |row|}}
+                <tr>
+                    {{#each row.cells as |cell|}}
+                        {{#if (eq row.i 0)}}
+                            <th>{{localize (concat "ceane-talent.StrainTable." cell.type "Header")}}</th>
+                        {{else}}
+                            <td>
+                                {{#if (eq cell.type "strain")}}
+                                    {{row.i}}
+                                {{else}}
+                                    <label class="strain-label {{#if cell.disabled}}disabled{{/if}}">
+                                        <input type="hidden" name="strain.{{cell.type}}" value={{row.i}} />
+                                        <a class="strain-toggle {{#if cell.disabled}}disabled{{/if}}">
+                                            <i class="{{#if cell.enabled}}fas fa-check{{else}}far fa-circle{{/if}}"></i>
+                                        </a>
+                                        {{localize (concat "ceane-talent.StrainTable." cell.type "." row.i)}}
+                                    </label>
+                                {{/if}}
+                            </td>
+                        {{/if}}
+                    {{/each}}
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
