@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1
+
+* Fixes the missing `languages` folder in the package release
+
 ## 1.0.0
 
 Initial release
