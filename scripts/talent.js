@@ -20,6 +20,8 @@ const POWER_SPECIALTIES = [
     'Telepathy'
 ];
 
+const STRAIN_FLAG = "strain";
+
 export const registerWithLibWrapper = function() {
     libWrapper.register(MODULE_NAME, 'game.dnd5e.applications.actor.ActorSheet5eCharacter.prototype._prepareSpellbook', getSpellbook, 'WRAPPER');
     libWrapper.register(MODULE_NAME, 'game.dnd5e.applications.item.AbilityUseDialog._getSpellData', getSpellData, 'MIXED');
@@ -133,19 +135,27 @@ export const addStrainTab = async function(sheet, html, actor) {
         return;
     }
 
+    if (actor.flags[MODULE_NAME] === undefined) {
+        await seedStrain(actor);
+    }
+
     const strainTab = $("<a>")
         .addClass("item")
         .attr("data-tab", "strain")
         .text(localise("StrainTab.title"));
-
 
     let resources = {};
     let totalStrain = 0;
     let maxStrain = getMaxStrain(actor);
 
     STRAIN_TYPES.forEach(type => {
-        let value = Number(actor.getFlag(MODULE_NAME, `strain.${type}`))
-        resources[type] = value;
+        let value = Number(actor.getFlag(MODULE_NAME, `${STRAIN_FLAG}.${type}`));
+        let label = localise(`StrainLabels.${type}`);
+        resources[type] = {
+            type: type,
+            value: value,
+            label: label
+        };
         totalStrain += value;
     });
 
@@ -160,8 +170,10 @@ export const addStrainTab = async function(sheet, html, actor) {
             let type = strainTypes[j];
             cells.push({
                 type: type,
-                enabled: i <= resources[type],
-                disabled: i > (resources[type] + remainingStrain)
+                header: localise(`StrainTable.${type}.Header`),
+                label: localise(`StrainTable.${type}.${i}`),
+                enabled: i <= resources[type]?.value,
+                disabled: i > (resources[type]?.value + remainingStrain)
             });
         }
         rows.push({
@@ -192,36 +204,47 @@ export const addStrainTab = async function(sheet, html, actor) {
     html.find("section.sheet-body").append($(strainBody));
     // html.find(".tab.spellbook").append($(strainInnerBody));
     html.find("a.strain-toggle:not(.disabled)").click(toggleOnClick.bind(actor))
-
-    if (actor.flags[MODULE_NAME] === undefined) {
-        seedStrain(actor);
-    }
 }
 
 async function toggleOnClick(event) {
-    let field = event.currentTarget.previousElementSibling;
-    let currentValue = this.getFlag(MODULE_NAME, field.name);
-    let newValue = field.value;
+    const field = event.currentTarget.previousElementSibling;
+    const strain = this.getFlag(MODULE_NAME, STRAIN_FLAG);
+    const currentValue = strain[field.name];
+    let newValue = Number(field.value);
 
     if (currentValue == newValue) {
         newValue -= 1;
     }
+
+    strain[field.name] = newValue;
+
+    let totalStrain = 0;
+
+    STRAIN_TYPES.forEach(type => {
+        totalStrain += strain[type]
+    });
+
+    let newStrain = {
+        [field.name]: newValue,
+        total: totalStrain
+    };
     
-    await this.setFlag(MODULE_NAME, field.name, newValue);
+    await this.setFlag(MODULE_NAME, STRAIN_FLAG, newStrain);
 }
 
 function isTidy5eSheet(sheet) {
     return sheet.constructor.name === CUSTOM_SHEETS.TIDY5E;
 }
 
-function seedStrain(actor) {
+async function seedStrain(actor) {
     let strainTable = {
         body: 0,
         mind: 0,
-        soul: 0
+        soul: 0,
+        total: 0
     };
 
-    actor.setFlag(MODULE_NAME, "strain", strainTable);
+    await actor.setFlag(MODULE_NAME, STRAIN_FLAG, strainTable);
 }
 
 function getMaxStrain(actor) {

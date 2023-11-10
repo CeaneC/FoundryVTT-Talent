@@ -1,67 +1,82 @@
 {
-    "ceane-talent.Power": "Power",
+    "ceane-talent": {
+        "Power": "Power",
 
-    "ceane-talent.PowerOrder0": "1st Order",
-    "ceane-talent.PowerOrder1": "<Please use Cantrip for 1st Order powers>",
-    "ceane-talent.PowerOrder2": "2nd Order",
-    "ceane-talent.PowerOrder3": "3rd Order",
-    "ceane-talent.PowerOrder4": "4th Order",
-    "ceane-talent.PowerOrder5": "5th Order",
-    "ceane-talent.PowerOrder6": "6th Order",
-    "ceane-talent.PowerOrder7": "<Invalid Power Level>",
-    "ceane-talent.PowerOrder8": "<Invalid Power Level>",
-    "ceane-talent.PowerOrder9": "<Invalid Power Level>",
-    "ceane-talent.PowerOrderSuffix": " Order",
+        "PowerOrder0": "1st Order",
+        "PowerOrder1": "<Please use Cantrip for 1st Order powers>",
+        "PowerOrder2": "2nd Order",
+        "PowerOrder3": "3rd Order",
+        "PowerOrder4": "4th Order",
+        "PowerOrder5": "5th Order",
+        "PowerOrder6": "6th Order",
+        "PowerOrder7": "<Invalid Power Level>",
+        "PowerOrder8": "<Invalid Power Level>",
+        "PowerOrder9": "<Invalid Power Level>",
+        "PowerOrderSuffix": " Order",
+    
+        "PowerManifestIncreaseOrder": "Manifest at Order",
+        "AbilityUseManifest": "Manifest Power",
 
-    "ceane-talent.PowerManifestIncreaseOrder": "Manifest at Order",
-    "ceane-talent.AbilityUseManifest": "Manifest Power",
+        "PowerSpecialty": {
+            "Header": "Power Specialty",
+            "Chronopathy": "Chronopathy",
+            "Metamorphosis": "Metamorphosis",
+            "Pyrokinesis": "Pyrokinesis",
+            "Resopathy": "Resopathy",
+            "Telekinesis": "Telekinesis",
+            "Telepathy": "Telepathy"
+        },
+        
+    
+        "PowerRange": "Power Range",
+        "PowerUsage": "Power Usage",
+        "PowerTarget": "Power Target",
+        "SpellPrepTalent": "Talent Power",
+    
+        "StrainTab.title": "Strain",
 
-    "ceane-talent.PowerSpecialty.Header": "Power Specialty",
-    "ceane-talent.PowerSpecialty.Chronopathy": "Chronopathy",
-    "ceane-talent.PowerSpecialty.Metamorphosis": "Metamorphosis",
-    "ceane-talent.PowerSpecialty.Pyrokinesis": "Pyrokinesis",
-    "ceane-talent.PowerSpecialty.Resopathy": "Resopathy",
-    "ceane-talent.PowerSpecialty.Telekinesis": "Telekinesis",
-    "ceane-talent.PowerSpecialty.Telepathy": "Telepathy",
+        "StrainLabels": {
+            "total": "Total Strain",
+            "body": "Body Strain",
+            "mind": "Mind Strain",
+            "soul": "Soul Strain"
+        },
 
-    "ceane-talent.PowerRange": "Power Range",
-    "ceane-talent.PowerUsage": "Power Usage",
-    "ceane-talent.PowerTarget": "Power Target",
-    "ceane-talent.SpellPrepTalent": "Talent Power",
-
-    "ceane-talent.StrainTab.title": "Strain",
-
-    "ceane-talent.StrainLabels.total": "Total Strain",
-    "ceane-talent.StrainLabels.body": "Body Strain",
-    "ceane-talent.StrainLabels.mind": "Mind Strain",
-    "ceane-talent.StrainLabels.soul": "Soul Strain",
-
-    "ceane-talent.StrainTable.strainHeader": "Strain",
-    "ceane-talent.StrainTable.bodyHeader": "Body Strain Effects",
-    "ceane-talent.StrainTable.mindHeader": "Mind Strain Effects",
-    "ceane-talent.StrainTable.soulHeader": "Soul Strain Effects",
-    "ceane-talent.StrainTable.body.1": "Disadvantage on Strength and Dexterity checks",
-    "ceane-talent.StrainTable.mind.1": "Can't take the Dash, Disengage, or Dodge actions",
-    "ceane-talent.StrainTable.soul.1": "Disadvantage on Wisdom and Charisma checks",
-    "ceane-talent.StrainTable.body.2": "No effect",
-    "ceane-talent.StrainTable.mind.2": "No effect",
-    "ceane-talent.StrainTable.soul.2": "No effect",
-    "ceane-talent.StrainTable.body.3": "Speed halved",
-    "ceane-talent.StrainTable.mind.3": "Lose proficiency in all skills",
-    "ceane-talent.StrainTable.soul.3": "Disadvantage on death saving throws",
-    "ceane-talent.StrainTable.body.4": "No effect",
-    "ceane-talent.StrainTable.mind.4": "No effect",
-    "ceane-talent.StrainTable.soul.4": "No effect",
-    "ceane-talent.StrainTable.body.5": "Disadvantage on Strength and Dexterity saving throws",
-    "ceane-talent.StrainTable.mind.5": "-5 penalty to AC",
-    "ceane-talent.StrainTable.soul.5": "Disadvantage on Wisdom and Charisma saving throws",
-    "ceane-talent.StrainTable.body.6": "No effect",
-    "ceane-talent.StrainTable.mind.6": "No effect",
-    "ceane-talent.StrainTable.soul.6": "No effect",
-    "ceane-talent.StrainTable.body.7": "Hit point maximum halved",
-    "ceane-talent.StrainTable.mind.7": "Lose proficiency in all saving throws",
-    "ceane-talent.StrainTable.soul.7": "When a supernatural effect causes you to regain hit points, you regain only half the amount you normally would",
-    "ceane-talent.StrainTable.body.8": "No effect",
-    "ceane-talent.StrainTable.mind.8": "No effect",
-    "ceane-talent.StrainTable.soul.8": "No effect"
+        "StrainTable": {
+            "strain.Header": "Strain",
+            "body": {
+                "Header": "Body Strain Effects",
+                "1": "Disadvantage on Strength and Dexterity checks",
+                "2": "No effect",
+                "3": "Speed halved",
+                "4": "No effect",
+                "5": "Disadvantage on Strength and Dexterity saving throws",
+                "6": "No effect",
+                "7": "Hit point maximum halved",
+                "8": "No effect"
+            },
+            "mind": {
+                "Header": "Mind Strain Effects",
+                "1": "Can't take the Dash, Disengage, or Dodge actions",
+                "2": "No effect",
+                "3": "Lose proficiency in all skills",
+                "4": "No effect",
+                "5": "-5 penalty to AC",
+                "6": "No effect",
+                "7": "Lose proficiency in all saving throws",
+                "8": "No effect"
+            },
+            "soul": {
+                "Header": "Soul Strain Effects",
+                "1": "Disadvantage on Wisdom and Charisma checks",
+                "2": "No effect",
+                "3": "Disadvantage on death saving throws",
+                "4": "No effect",
+                "5": "Disadvantage on Wisdom and Charisma saving throws",
+                "6": "No effect",
+                "7": "When a supernatural effect causes you to regain hit points, you regain only half the amount you normally would",
+                "8": "No effect"
+            }
+        }
+    }
 }

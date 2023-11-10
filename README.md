@@ -25,9 +25,17 @@ This module also adds a new tab to the character sheet of your Talent for tracki
 
 ![Vanilla strain tab screenshot](images/vanilla-strain3.png)
 
-## Setup Instructions
+## FAQ
 
-* Strain Tab: Add a class to your character with a class identifier of `talent`
-* Powers: Add a spell to your spellbook, set Spell Preparation Mode to Talent Power
-    * 1st Order: Set the Spell Level to Cantrip
-    * 2nd to 6th Order: Set the Spell Level to 2nd to 6th Level
+**Q:** How do I add the Strain tab to a sheet?  
+**A:** Add a class to your character with a class identifier of `talent`
+
+**Q:** How do I add powers to my spellbook?  
+**A:** Ad a spell to your spellbook, and set the Spell Prepration Mode to Talent Power. For 1st Order powers, set the Spell Level to Cantrip. For 2nd to 6th Order powers, set the Spell Level to 2nd to 6th Level.
+
+**Q:** How can I reference Strain in macros/modules?  
+**A:** The module's fields are stored in the following flags:
+* `flags.ceane-talent.strain.total`
+* `flags.ceane-talent.strain.body`
+* `flags.ceane-talent.strain.mind`
+* `flags.ceane-talent.strain.soul`
