@@ -27,15 +27,39 @@ This module also adds a new tab to the character sheet of your Talent for tracki
 
 ## FAQ
 
-**Q:** How do I add the Strain tab to a sheet?  
+### **Q:** How do I add the Strain tab to a sheet?  
 **A:** Add a class to your character with a class identifier of `talent`
 
-**Q:** How do I add powers to my spellbook?  
-**A:** Ad a spell to your spellbook, and set the Spell Prepration Mode to Talent Power. For 1st Order powers, set the Spell Level to Cantrip. For 2nd to 6th Order powers, set the Spell Level to 2nd to 6th Level.
+### **Q:** How do I add powers to my spellbook?  
+**A:** Add a spell to your spellbook, and set the Spell Prepration Mode to Talent Power.   
+For 1st Order powers, set the Spell Level to Cantrip.  
+ For 2nd to 6th Order powers, set the Spell Level to 2nd to 6th Level.
 
-**Q:** How can I reference Strain in macros/modules?  
+### **Q:** How can I reference Strain in macros/modules?  
 **A:** The module's fields are stored in the following flags:
 * `flags.ceane-talent.strain.total`
+* `flags.ceane-talent.strain.max`
 * `flags.ceane-talent.strain.body`
 * `flags.ceane-talent.strain.mind`
 * `flags.ceane-talent.strain.soul`
+
+### **Q:** How can I add a resource bar above the token showing their total strain?  
+**A:** Since these attributes are currently restricted to system-level resources, you'll have to override one of the existing attributes using Active Effects.
+
+Choose whether you would like to override Resource 1 (primary), Resource 2 (secondary), or Resource 3 (tertiary) on the character sheet. Then create a new Passive Effect on the character with the following settings:
+
+![Screenshot of active effect](./images/resource-active-effect.png)
+
+* Total:
+    * Atribute Key: `system.resources.primary.value`
+    * Change Mode: `Override`
+    * Effect Value: `@flags.ceane-talent.strain.total`
+* Max:
+    * Attribute Key: `system.resources.primary.max`
+    * Change Mode: `Override`
+    * Effect Value: `@flags.ceane-talent.strain.max`
+
+### **Q**: How can I change the rate that a character's Max Strain goes up?
+**A:** Create an active effect that overrides the `@flags.ceane-talent.strain.max` flag, and put in the desired formula in Effect Value. For more control, you can edit the class's advancement to add a Scale Value that increases as they level up, and reference the value in the Active Effect.
+
+![Screenshot of active effect and class advancement](./images/max-strain-override.png)

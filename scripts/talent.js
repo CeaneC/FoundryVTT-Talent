@@ -5,7 +5,7 @@ const CUSTOM_SHEETS = {
     TIDY5E: "Tidy5eSheet"
 };
 
-const STRAIN_TYPES = [
+export const STRAIN_TYPES = [
     "body",
     "mind",
     "soul"
@@ -142,7 +142,7 @@ export const addStrainTab = async function(sheet, html, actor) {
     const strainTab = $("<a>")
         .addClass("item")
         .attr("data-tab", "strain")
-        .text(localise("StrainTab.title"));
+        .text(game.settings.get(MODULE_NAME, `strainName.strain`));
 
     let resources = {};
     let totalStrain = 0;
@@ -150,7 +150,7 @@ export const addStrainTab = async function(sheet, html, actor) {
 
     STRAIN_TYPES.forEach(type => {
         let value = Number(actor.getFlag(MODULE_NAME, `${STRAIN_FLAG}.${type}`));
-        let label = localise(`StrainLabels.${type}`);
+        let label = game.settings.get(MODULE_NAME, `strainName.${type}`);
         resources[type] = {
             type: type,
             value: value,
@@ -168,9 +168,17 @@ export const addStrainTab = async function(sheet, html, actor) {
         let cells = [];
         for (let j = 0; j < 4; j++) {
             let type = strainTypes[j];
+            let header;
+
+            if (j === 0) {
+                header = game.settings.get(MODULE_NAME, `strainName.${type}`);
+            } else {
+                header = `${game.settings.get(MODULE_NAME, `strainName.${type}`)} ${localise("StrainTable.HeaderSuffix")}`;
+            }
+
             cells.push({
                 type: type,
-                header: localise(`StrainTable.${type}.Header`),
+                header: header,
                 label: localise(`StrainTable.${type}.${i}`),
                 enabled: i <= resources[type]?.value,
                 disabled: i > (resources[type]?.value + remainingStrain)
@@ -183,6 +191,7 @@ export const addStrainTab = async function(sheet, html, actor) {
     }
 
     const template_data = {
+        total_strain_label: game.settings.get(MODULE_NAME, 'strainName.total'),
         total_strain: totalStrain,
         max_strain: maxStrain,
         remaining_strain: remainingStrain,
@@ -226,7 +235,8 @@ async function toggleOnClick(event) {
 
     let newStrain = {
         [field.name]: newValue,
-        total: totalStrain
+        total: totalStrain,
+        max: calculateMaxStrain(this)
     };
     
     await this.setFlag(MODULE_NAME, STRAIN_FLAG, newStrain);
@@ -241,13 +251,23 @@ async function seedStrain(actor) {
         body: 0,
         mind: 0,
         soul: 0,
-        total: 0
+        total: 0,
+        max: calculateMaxStrain(actor)
     };
 
     await actor.setFlag(MODULE_NAME, STRAIN_FLAG, strainTable);
 }
 
 function getMaxStrain(actor) {
+    let maxStrain = actor.getFlag(MODULE_NAME, `${STRAIN_FLAG}.max`);
+
+    if (maxStrain === undefined)
+        return calculateMaxStrain(actor);
+    else
+        return maxStrain;
+}
+
+function calculateMaxStrain(actor) {
     return actor.classes.talent.system.levels + 4;
 }
 

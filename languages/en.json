@@ -1,5 +1,22 @@
 {
     "ceane-talent": {
+        "Settings": {
+            "Debug": "Debug logs",
+            "DebugHint": "Enable debug log messages in the console",
+            "StrainName": {
+                "strain": "Strain Name",
+                "strainHint": "What you would like Strain to be called",
+                "total": "Total Strain Name",
+                "totalHint": "What you would like the total amount of Strain to be called",
+                "body": "Body Strain Name",
+                "bodyHint": "What you would like Body Strain to be called",
+                "mind": "Mind Strain Name",
+                "mindHint": "What you would like Mind Strain to be called",
+                "soul": "Soul Strain Name",
+                "soulHint": "What you would like Soul Strain to be called"
+            }
+        },
+
         "Power": "Power",
 
         "PowerOrder0": "1st Order",
@@ -33,7 +50,7 @@
         "PowerTarget": "Power Target",
         "SpellPrepTalent": "Talent Power",
     
-        "StrainTab.title": "Strain",
+        "Strain": "Strain",
 
         "StrainLabels": {
             "total": "Total Strain",
@@ -43,9 +60,8 @@
         },
 
         "StrainTable": {
-            "strain.Header": "Strain",
+            "HeaderSuffix": " Effects",
             "body": {
-                "Header": "Body Strain Effects",
                 "1": "Disadvantage on Strength and Dexterity checks",
                 "2": "No effect",
                 "3": "Speed halved",
@@ -56,7 +72,6 @@
                 "8": "No effect"
             },
             "mind": {
-                "Header": "Mind Strain Effects",
                 "1": "Can't take the Dash, Disengage, or Dodge actions",
                 "2": "No effect",
                 "3": "Lose proficiency in all skills",
@@ -67,7 +82,6 @@
                 "8": "No effect"
             },
             "soul": {
-                "Header": "Soul Strain Effects",
                 "1": "Disadvantage on Wisdom and Charisma checks",
                 "2": "No effect",
                 "3": "Disadvantage on death saving throws",

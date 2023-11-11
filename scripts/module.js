@@ -1,4 +1,4 @@
-import { registerWithLibWrapper, renderUsePowerDialog, addStrainTab, renameSpellbookHeadings, preDisplayPowerCard, renderRsr5ePower, setupPowerSpecialties } from "./talent.js";
+import { registerWithLibWrapper, renderUsePowerDialog, addStrainTab, renameSpellbookHeadings, preDisplayPowerCard, renderRsr5ePower, setupPowerSpecialties, STRAIN_TYPES } from "./talent.js";
 
 export const KEY = 'ceane-talent';
 export const NAME = "Ceane's Talent";
@@ -14,20 +14,55 @@ let renderAbilityUseDialogHookId = Hooks.on("renderAbilityUseDialog", (dialog, h
     renderUsePowerDialog(dialog, html);
 });
 
-Hooks.once('init', () => {
+Hooks.once('i18nInit', () => {
     console.log(`${NAME} | Initialising ${KEY}`);
+    registerSettings();
+    updateDebug();
+    setupPowerSpecialties();
+});
+
+function registerSettings() {
     game.settings.register(KEY, SETTING_DEBUG, {
-        name: game.i18n.localize(`${KEY}.debug`),
-        hint: game.i18n.localize(`${KEY}.debugHunt`),
+        name: game.i18n.localize(`${KEY}.Settings.Debug`),
+        hint: game.i18n.localize(`${KEY}.Settings.DebugHint`),
         scope: 'client',
         config: true,
         default: false,
         type: Boolean,
         onChange: updateDebug,
     });
-    updateDebug();
-    setupPowerSpecialties();
-});
+
+    game.settings.register(KEY, 'strainName.strain', {
+        name: game.i18n.localize(`${KEY}.Settings.StrainName.strain`),
+        hint: game.i18n.localize(`${KEY}.Settings.StrainName.strainHint`),
+        scope: 'world',
+        config: true,
+        type: String,
+        default: game.i18n.localize(`${KEY}.Strain`),
+    });
+
+    STRAIN_TYPES.forEach(type => {
+        game.settings.register(KEY, `strainName.${type}`, {
+            name: game.i18n.localize(`${KEY}.Settings.StrainName.${type}`),
+            hint: game.i18n.localize(`${KEY}.Settings.StrainName.${type}Hint`),
+            scope: 'world',
+            config: true,
+            type: String,
+            default: game.i18n.localize(`${KEY}.StrainLabels.${type}`),
+        });
+    });
+
+    game.settings.register(KEY, 'strainName.total', {
+        name: game.i18n.localize(`${KEY}.Settings.StrainName.total`),
+        hint: game.i18n.localize(`${KEY}.Settings.StrainName.totalHint`),
+        scope: 'world',
+        config: true,
+        type: String,
+        default: game.i18n.localize(`${KEY}.StrainLabels.total`),
+    });
+
+
+}
 
 Hooks.once('ready', () => {
     console.log(`${NAME} | Readying ${KEY}`);

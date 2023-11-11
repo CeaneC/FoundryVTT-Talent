@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.0
+
+* Adds a flag for tracking max strain for other modules/effects to hook into. Found at `flags.ceane-talent.strain.max`
+* Allows the strain tracks to be renamed
+
 ## 1.1.0
 
 * Adds a flag for tracking total strain for other modules/effects to hook into. Found at `flags.ceane-talent.strain.total`
