@@ -24,7 +24,7 @@ const STRAIN_FLAG = "strain";
 
 export const registerWithLibWrapper = function() {
     libWrapper.register(MODULE_NAME, 'game.dnd5e.applications.actor.ActorSheet5eCharacter.prototype._prepareSpellbook', getSpellbook, 'WRAPPER');
-    libWrapper.register(MODULE_NAME, 'game.dnd5e.applications.item.AbilityUseDialog._getSpellData', getSpellData, 'MIXED');
+    libWrapper.register(MODULE_NAME, 'game.dnd5e.applications.item.AbilityUseDialog._createSpellSlotOptions', createSpellSlotOptions, 'WRAPPER');
 };
 
 export const setupPowerSpecialties = function() {
@@ -283,9 +283,10 @@ function getSpellbook(wrapped, ...args) {
     return book;
 }
 
-function getSpellData(wrapped, ...args) {
-    let result = getPowerData(...args);
-    if (result == null) result = wrapped(...args);
+function createSpellSlotOptions(wrapped, ...args) {
+    log.debug("createSpellSlotOptions", ...args);
+    let result = createPowerOrderOptions(...args).concat(wrapped(...args));
+    log.debug("getPowerData result: ", result);
     return result;
 }
 
@@ -293,11 +294,21 @@ function getSpellData(wrapped, ...args) {
 
 //#region Spellbook
 
+/**
+ * @param {object} context  Sheet rendering context data being prepared for render.
+ * @param {object[]} spells Spells to be included in the spellbook.
+ * @returns {object[]}      Spellbook sections in the proper order.
+ */
 function getNonTalentSpells(context, spells) {
     let noPowers = spells.filter(s => s.system.preparation.mode != 'talent')
     return [ context, noPowers ];
 }
 
+/**
+ * @param {object} context  Sheet rendering context data being prepared for render.
+ * @param {object[]} spells Spells to be included in the spellbook.
+ * @returns {object[]}      Spellbook sections in the proper order.
+ */
 function prepareTalentSpellbook(context, spells) {
     const levels = context.actor.system.spells;
     const powerbook = {}
@@ -382,30 +393,25 @@ export const renameSpellbookHeadings = function(sheet, html, actor) {
 
 //#endregion
 
-function getPowerData(characterData, spellData, item) {
-    if (spellData.preparation.mode !== 'talent') {
-        return null;
+/**
+ * 
+ * @param {dnd5e.documents.Actor5e} actor   The actor with spell slots.
+ * @param {number} order    The minimum order
+ * @returns {object[]}      Array of spell slot select options.
+ * @private
+ */
+function createPowerOrderOptions(actor, order) {
+    if (actor.classes.talent === undefined || order === 1) {
+        return [];
     }
 
-    let title = game.i18n.format("DND5E.AbilityUseHint", {type: localise("Power"), name: item.item.name});
-
-
-    // If it's a 1st Order power, it can't be upcast
-    if (spellData.level === 1) {
-        return foundry.utils.mergeObject(item, {
-            title: title,
-            isSpell: true,
-            consumeSpellSlot: false,
-            spellLevels: null });
-    }
-
-    // Determine which levels are feasible
-    const lvl = spellData.level;
-    let maxOrder = Math.ceil(characterData.parent.classes.talent.system.levels / 4) + 1;
-    const spellLevels = Array.fromRange(maxOrder+1).reduce((arr, i) => {
-        if (i < lvl) return arr;
+    // Determine which orders are feasible
+    let maxOrder = Math.ceil(actor.classes.talent.system.levels / 4) + 1;
+    const powerOrders = Array.fromRange(maxOrder+1).reduce((arr, i) => {
+        if (i < order) return arr;
         const label = getOrderName(i);
         arr.push({
+            key: `power${i}`,
             level: i,
             label: label,
             canCast: true,
@@ -414,29 +420,5 @@ function getPowerData(characterData, spellData, item) {
         return arr;
     }, []);
 
-
-    // Merge spell casting data
-    let result = foundry.utils.mergeObject(item, {
-        title: title,
-        isSpell: true,
-        consumeSpellSlot: true,
-        spellLevels
-    });
-    return result;
-}
-
-const spellLevelToOrder = (spellLevelString) => {
-    if (spellLevelString == localise("SpellLevel0", "DND5E")) {
-        return localise("PowerOrder0");
-    }
-    let level = spellLevelString.match(/\d/g);
-    return getOrderName(level);
-}
-
-const getOrderName = (order) => {
-    return localise(`PowerOrder${order}`);
-}
-
-function localise(key, namespace = MODULE_NAME) {
-    return game.i18n.localize(`${namespace}.${key}`);
+    return powerOrders;
 }
