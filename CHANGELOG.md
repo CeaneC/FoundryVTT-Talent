@@ -1,9 +1,13 @@
 # Changelog
 
+## 1.2.1
+
+* Update to support D&D5e 2.4.0
+
 ## 1.2.0
 
 * Adds a flag for tracking max strain for other modules/effects to hook into. Found at `flags.ceane-talent.strain.max`
-* Allows the strain tracks to be renamed
+* Allows strain and the strain tracks to be renamed in the module settings
 
 ## 1.1.0
 

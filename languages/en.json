@@ -18,6 +18,7 @@
         },
 
         "Power": "Power",
+        "PowerTypeLabel": "power",
 
         "PowerOrder0": "1st Order",
         "PowerOrder1": "<Please use Cantrip for 1st Order powers>",

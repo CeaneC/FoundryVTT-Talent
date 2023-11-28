@@ -1,4 +1,7 @@
-import { registerWithLibWrapper, renderUsePowerDialog, addStrainTab, renameSpellbookHeadings, preDisplayPowerCard, renderRsr5ePower, setupPowerSpecialties, STRAIN_TYPES } from "./talent.js";
+import { renderUsePowerDialog } from "./power-use-dialog.js";
+import { preDisplayPowerCard, renderRsr5ePower } from "./chat-card.js";
+import { addStrainTab, STRAIN_TYPES } from "./strain-tab.js";
+import { registerWithLibWrapper, renameSpellbookHeadings, setupPowerSpecialties } from "./talent.js";
 
 export const KEY = 'ceane-talent';
 export const NAME = "Ceane's Talent";
@@ -8,6 +11,11 @@ const SETTING_DEBUG = 'debug';
 let debugEnabled = false;
 const updateDebug = () => {
     debugEnabled = !!game.settings.get(KEY, SETTING_DEBUG);
+};
+
+export const CUSTOM_SHEETS = {
+    DEFAULT: "ActorSheet5eCharacter",
+    TIDY5E: "Tidy5eSheet"
 };
 
 let renderAbilityUseDialogHookId = Hooks.on("renderAbilityUseDialog", (dialog, html, formData) => {
