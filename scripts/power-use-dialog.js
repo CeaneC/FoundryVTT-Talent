@@ -1,5 +1,41 @@
-import { log } from './module.js';
-import { localise, spellLevelToOrder } from './utils.js';
+import { getOrderName, localise, log, spellLevelToOrder } from './utils.js';
+
+export function createSpellSlotOptions(wrapped, ...args) {
+    log.debug("createSpellSlotOptions", ...args);
+    let result = createPowerOrderOptions(...args).concat(wrapped(...args));
+    log.debug("getPowerData result: ", result);
+    return result;
+}
+
+/**
+ *
+ * @param {dnd5e.documents.Actor5e} actor   The actor with spell slots.
+ * @param {number} order    The minimum order the power can be manifested at
+ * @returns {object[]}      Array of spell slot select options.
+ * @private
+ */
+function createPowerOrderOptions(actor, order) {
+    if (actor.classes.talent === undefined || order === 1) {
+        return [];
+    }
+
+    // Determine which orders are feasible
+    let maxOrder = Math.ceil(actor.classes.talent.system.levels / 4) + 1;
+    const powerOrders = Array.fromRange(maxOrder + 1).reduce((arr, i) => {
+        if (i < order) return arr;
+        const label = getOrderName(i);
+        arr.push({
+            key: `power${i}`,
+            level: i,
+            label: label,
+            canCast: true,
+            hasSlots: true
+        });
+        return arr;
+    }, []);
+
+    return powerOrders;
+}
 
 export const renderUsePowerDialog = function(dialog, html) {
     if (dialog.item.system.preparation.mode !== 'talent') {
@@ -34,12 +70,14 @@ export const renderUsePowerDialog = function(dialog, html) {
     let manifestPower = localise(`AbilityUseManifest`);
 
     html.find(`form p:contains('${spellHint}')`).map((i, e) => {
-        let newText = $(e).text().replace(spellHint, powerHint);
-        return $(e).text(newText);
+        const element = $(e)
+        let newText = element.text().replace(spellHint, powerHint);
+        return element.text(newText);
     })
     html.find(`form div label:contains('${castLevel}')`).map((i, e) => {
-        let newText = $(e).text().replace(castLevel, manifestAtOrder);
-        return $(e).text(newText);
+        const element = $(e)
+        let newText = element.text().replace(castLevel, manifestAtOrder);
+        return element.text(newText);
     });
     // Remove spell slots from the upcasting options
     html.find(`form div.form-fields select[name="slotLevel"] option`).map((i, e) => {

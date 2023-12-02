@@ -1,5 +1,4 @@
-import { log } from "./module.js";
-import { spellLevelToOrder } from "./utils.js";
+import { log, spellLevelToOrder } from "./utils.js";
 
 export const preDisplayPowerCard = function(item, chatData) {
     if (item.system.preparation.mode !== 'talent') {
