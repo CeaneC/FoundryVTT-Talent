@@ -1,11 +1,29 @@
-import { registerWithLibWrapper, renderUsePowerDialog, addStrainTab, renameSpellbookHeadings, preDisplayPowerCard, renderRsr5ePower, setupPowerSpecialties, STRAIN_TYPES } from "./talent.js";
+import { createSpellSlotOptions, renderUsePowerDialog } from "./power-use-dialog.js";
+import { preDisplayPowerCard, renderRsr5ePower } from "./chat-card.js";
+import { addStrainTab, STRAIN_TYPES } from "./strain-tab.js";
+import { getSpellbook, renameSpellbookHeadings } from './spellbook.js';
+import { localise } from "./utils.js";
 
 export const KEY = 'ceane-talent';
 export const NAME = "Ceane's Talent";
 export const CSS_PREFIX = `${KEY}--`;
 
+export const CUSTOM_SHEETS = {
+    DEFAULT: "ActorSheet5eCharacter",
+    TIDY5E: "Tidy5eSheet"
+};
+
+const POWER_SPECIALTIES = [
+    'Chronopathy',
+    'Metamorphosis',
+    'Pyrokinesis',
+    'Resopathy',
+    'Telekinesis',
+    'Telepathy'
+];
+
 const SETTING_DEBUG = 'debug';
-let debugEnabled = false;
+export let debugEnabled = false;
 const updateDebug = () => {
     debugEnabled = !!game.settings.get(KEY, SETTING_DEBUG);
 };
@@ -64,14 +82,25 @@ function registerSettings() {
 
 }
 
+const setupPowerSpecialties = function () {
+    CONFIG.DND5E.spellPreparationModes['talent'] = localise("SpellPrepTalent");
+    CONFIG.DND5E.spellUpcastModes.push('talent');
+
+    POWER_SPECIALTIES.forEach(s => {
+        CONFIG.DND5E.spellSchools[s] = localise(`PowerSpecialty.${s}`);
+    });
+};
+
 Hooks.once('ready', () => {
     console.log(`${NAME} | Readying ${KEY}`);
     if (!game.modules.get('lib-wrapper')?.active && game.user.isGM) {
         ui.notifications.error(`Module ${KEY} requires the 'libWrapper' module. Please install and activate it.`);
     } else {
-        registerWithLibWrapper();
+        libWrapper.register(KEY, 'game.dnd5e.applications.actor.ActorSheet5eCharacter.prototype._prepareSpellbook', getSpellbook, 'WRAPPER');
+        libWrapper.register(KEY, 'game.dnd5e.applications.item.AbilityUseDialog._createSpellSlotOptions', createSpellSlotOptions, 'WRAPPER');
     }
 
+    // Run this module's renderAbilityUseDialog hook after any other modules'
     const events = Hooks.events.renderAbilityUseDialog
     let index = events.findIndex(h => h.id == renderAbilityUseDialogHookId);
     let renderAbilityUseDialogHook = events.splice(index, 1)[0];
@@ -121,9 +150,10 @@ Hooks.on("rsr5e.render", (quickRoll) => {
 
 Handlebars.registerHelper('plus', function (a, b) {
     return Number(a) + Number(b);
-})
+});
 
-const LOG_PREFIX = `%c${NAME}`
+const LOG_PREFIX = `%c${NAME}`;
+
 const _log = (logFN, ...args) => {
     logFN.apply(console, [LOG_PREFIX, 'background-color: #4f0104; color: #fff; padding: 0.1em 0.5em;', ...args]);
 };
