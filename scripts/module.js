@@ -2,7 +2,7 @@ import { createSpellSlotOptions, renderUsePowerDialog } from "./power-use-dialog
 import { preDisplayPowerCard, renderRsr5ePower } from "./chat-card.js";
 import { addStrainTab, STRAIN_TYPES } from "./strain-tab.js";
 import { getSpellbook, renameSpellbookHeadings } from './spellbook.js';
-import { localise, log } from "./utils.js";
+import { localise } from "./utils.js";
 
 export const KEY = 'ceane-talent';
 export const NAME = "Ceane's Talent";
@@ -96,8 +96,8 @@ Hooks.once('ready', () => {
     if (!game.modules.get('lib-wrapper')?.active && game.user.isGM) {
         ui.notifications.error(`Module ${KEY} requires the 'libWrapper' module. Please install and activate it.`);
     } else {
-        libWrapper.register(MODULE_NAME, 'game.dnd5e.applications.actor.ActorSheet5eCharacter.prototype._prepareSpellbook', getSpellbook, 'WRAPPER');
-        libWrapper.register(MODULE_NAME, 'game.dnd5e.applications.item.AbilityUseDialog._createSpellSlotOptions', createSpellSlotOptions, 'WRAPPER');
+        libWrapper.register(KEY, 'game.dnd5e.applications.actor.ActorSheet5eCharacter.prototype._prepareSpellbook', getSpellbook, 'WRAPPER');
+        libWrapper.register(KEY, 'game.dnd5e.applications.item.AbilityUseDialog._createSpellSlotOptions', createSpellSlotOptions, 'WRAPPER');
     }
 
     // Run this module's renderAbilityUseDialog hook after any other modules'
@@ -151,3 +151,27 @@ Hooks.on("rsr5e.render", (quickRoll) => {
 Handlebars.registerHelper('plus', function (a, b) {
     return Number(a) + Number(b);
 });
+
+const LOG_PREFIX = `%c${NAME}`;
+
+const _log = (logFN, ...args) => {
+    logFN.apply(console, [LOG_PREFIX, 'background-color: #4f0104; color: #fff; padding: 0.1em 0.5em;', ...args]);
+};
+
+export const log = {
+    dir: (label, ...args) => {
+        const group = `${NAME} | ${label}`;
+        console.group(group);
+        console.dir(...args);
+        console.groupEnd(group);
+    },
+    debug: (...args) => {
+        debugEnabled && _log(console.debug, ...args);
+    },
+    info: (...args) => {
+        _log(console.info, ...args);
+    },
+    error: (...args) => {
+        _log(console.error, ...args);
+    }
+};

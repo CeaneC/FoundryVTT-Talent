@@ -1,4 +1,5 @@
-import { getOrderName, localise, log, spellLevelToOrder } from './utils.js';
+import { getOrderName, localise, spellLevelToOrder } from './utils.js';
+import { log } from "./module.js";
 
 export function createSpellSlotOptions(wrapped, ...args) {
     log.debug("createSpellSlotOptions", ...args);
