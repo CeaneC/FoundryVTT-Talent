@@ -28,7 +28,7 @@ This module also adds a new tab to the character sheet of your Talent for tracki
 ## FAQ
 
 ### **Q:** How do I add the Strain tab to a sheet?  
-**A:** Add a class to your character with a class identifier of `talent`
+**A:** Add a class to your character with a class identifier of `talent`. [Click here for a more in-depth walkthrough on how to do that](https://github.com/CeaneC/FoundryVTT-Talent/issues/3#issuecomment-1851985018).
 
 ### **Q:** How do I add powers to my spellbook?  
 **A:** Add a spell to your spellbook, and set the Spell Prepration Mode to Talent Power.   

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.2
+
+* Fix a bug where opening a non-talent's sheet would result in just the actor's image being visible with nothing else
+
 ## 1.2.1
 
 * Update to support D&D5e 2.4.0
