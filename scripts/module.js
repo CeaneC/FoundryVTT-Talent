@@ -107,9 +107,12 @@ Hooks.once('ready', () => {
     events.push(renderAbilityUseDialogHook);
 })
 
+let setupComplete = false;
+
 Hooks.on('setup', () => {
     console.log(`${NAME} | Setting up ${KEY}`);
     setupPowerSpecialties();
+    setupComplete = true;
 });
 
 let lastUpdatedStrainActorId = null;
@@ -129,6 +132,7 @@ Hooks.on("updateActor", (actor, data, options, id) => {
 })
 
 Hooks.on("dnd5e.prepareLeveledSlots", (spells, actor, slots) => {
+    if (!setupComplete) return;
     saveActorIdOnStrainTab(actor);
 })
 
