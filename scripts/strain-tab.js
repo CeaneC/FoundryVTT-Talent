@@ -1,4 +1,4 @@
-import { KEY as MODULE_NAME, CUSTOM_SHEETS } from './module.js';
+import { KEY as MODULE_NAME, CUSTOM_SHEETS, log, KEY } from './module.js';
 import { localise } from './utils.js';
 
 export const STRAIN_TYPES = [
@@ -14,14 +14,29 @@ export const addStrainTab = async function(sheet, html, actor) {
         return;
     }
 
+    log.debug("Adding strain tab to character sheet", sheet, html, actor);
+
     if (actor.flags[MODULE_NAME] === undefined) {
         await seedStrain(actor);
     }
 
-    const strainTab = $("<a>")
-        .addClass("item")
-        .attr("data-tab", "strain")
-        .text(game.settings.get(MODULE_NAME, `strainName.strain`));
+    let strainName = game.settings.get(MODULE_NAME, "strainName.strain");
+
+    let strainTab;
+    if (isDefault5eSheet(sheet)) {
+        strainTab = $("<a>")
+            .addClass("item control")
+            .attr("data-tab", "strain")
+            .attr("data-tooltip", strainName)
+            .attr("aria-label", strainName)
+            .append($("<i>")
+                .addClass("fas fa-brain"));
+    } else {
+        strainTab = $("<a>")
+            .addClass("item")
+            .attr("data-tab", "strain")
+            .text(game.settings.get(MODULE_NAME, `strainName.strain`));
+    }
 
     let resources = {};
     let totalStrain = 0;
@@ -52,7 +67,7 @@ export const addStrainTab = async function(sheet, html, actor) {
             if (j === 0) {
                 header = game.settings.get(MODULE_NAME, `strainName.${type}`);
             } else {
-                header = `${game.settings.get(MODULE_NAME, `strainName.${type}`)} ${localise("StrainTable.HeaderSuffix")}`;
+                header = game.i18n.format(`${KEY}.StrainTable.Header`, { type: game.settings.get(MODULE_NAME, `strainName.${type}`) });
             }
 
             cells.push({
@@ -71,6 +86,7 @@ export const addStrainTab = async function(sheet, html, actor) {
 
     const template_data = {
         total_strain_label: game.settings.get(MODULE_NAME, 'strainName.total'),
+        maximum_strain_label: game.settings.get(MODULE_NAME, 'strainName.maximum'),
         total_strain: totalStrain,
         max_strain: maxStrain,
         remaining_strain: remainingStrain,
@@ -80,16 +96,24 @@ export const addStrainTab = async function(sheet, html, actor) {
 
     let template = `/modules/${MODULE_NAME}/templates/`;
 
-    if (isTidy5eSheet(sheet)) {
+    if (isDefault5eSheet(sheet)) {
+        template += "actor-strain.hbs"
+    } else if (isTidy5eSheet(sheet)) {
         template += "actor-strain-t5e.hbs";
     } else {
-        template += "actor-strain.hbs";
+        template += "actor-strain-legacy.hbs";
     }
 
     let strainBody = await renderTemplate(template, template_data);
 
-    html.find("nav.tabs").append(strainTab);
-    html.find("section.sheet-body").append($(strainBody));
+    if (isDefault5eSheet(sheet)) {
+        html.find("section.sheet-body section.tab-body").append($(strainBody));
+        html.find("nav.tabs .item.control[data-tab='spells']").after(strainTab);
+    } else {
+        html.find("section.sheet-body").append($(strainBody));
+        html.find("nav.tabs").append(strainTab);
+    }
+
     html.find("a.strain-toggle:not(.disabled)").click(toggleOnClick.bind(actor))
 }
 
@@ -122,6 +146,10 @@ async function toggleOnClick(event) {
 
 function isTidy5eSheet(sheet) {
     return sheet.constructor.name === CUSTOM_SHEETS.TIDY5E;
+}
+
+function isDefault5eSheet(sheet) {
+    return sheet.constructor.name === CUSTOM_SHEETS.DEFAULT;
 }
 
 async function seedStrain(actor) {
