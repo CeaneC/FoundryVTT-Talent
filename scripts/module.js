@@ -165,7 +165,7 @@ Hooks.on("renderActorSheet5eCharacter", async (sheet, html, data) => {
     if (lastUpdatedStrainActorId == data.actor.id) {
         log.debug("last updated strain actor is this actor. sheet:", sheet, "html:", html, "data:", data)
         
-        if (html.is("form") && !html.is("form.tab-strain")) {
+        if (sheet.constructor.name === CUSTOM_SHEETS.DEFAULT && html.is("form") && !html.is("form.tab-strain")) {
             // Edit mode was toggled, so don't change the tab unless they were already on the strain tab
             // When toggling edit mode, the html variable focuses the current form, rather than the whole sheet
             return;
