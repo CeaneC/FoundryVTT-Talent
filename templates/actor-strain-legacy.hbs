@@ -1,0 +1,54 @@
+<div class="tab strain" data-tab="strain" >
+{{!-- <div style="border-top: 2px groove #eeede0; overflow-y: scroll; height: 50%"> --}}
+    <div>
+        <ul class="attributes flexrow" style="flex-wrap:wrap-reverse">
+            {{#each resources as |resource|}}
+                <li class="attribute resource">
+                    <h4 class="attribute-name box-title">{{resource.label}}</h4>
+                    <div class="attribute-value">
+                        <input type="number"
+                        name="flags.ceane-talent.strain.{{resource.type}}"
+                        value="{{resource.value}}"
+                        min="0"
+                        max="{{plus resource.value ../remaining_strain}}" />
+                    </div>
+                </li>
+            {{/each}}
+            <li class="attribute resource" style="flex:1 0 100%">
+                <h4 class="attribute-name box-title">{{total_strain_label}}</h4>
+                <div class="attribute-value">
+                    <input type="number" min="0" value="{{total_strain}}" disabled />
+                    <span class="sep"> / </span>
+                    <input type="number" value="{{max_strain}}" disabled>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <table>
+        <tbody>
+            {{#each rows as |row|}}
+                <tr>
+                    {{#each row.cells as |cell|}}
+                        {{#if (eq row.i 0)}}
+                            <th>{{cell.header}}</th>
+                        {{else}}
+                            <td>
+                                {{#if (eq cell.type "strain")}}
+                                    {{row.i}}
+                                {{else}}
+                                    <label class="strain-label {{#if cell.disabled}}disabled{{/if}}">
+                                        <input type="hidden" name="{{cell.type}}" value={{row.i}} />
+                                        <a class="strain-toggle {{#if cell.disabled}}disabled{{/if}}">
+                                            <i class="{{#if cell.enabled}}fas fa-check{{else}}far fa-circle{{/if}}"></i>
+                                        </a>
+                                        {{cell.label}}
+                                    </label>
+                                {{/if}}
+                            </td>
+                        {{/if}}
+                    {{/each}}
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>

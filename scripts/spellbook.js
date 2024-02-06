@@ -1,4 +1,4 @@
-import { CUSTOM_SHEETS } from './module.js';
+import { CUSTOM_SHEETS, KEY, log } from './module.js';
 import { getOrderName, localise } from './utils.js';
 
 export function getSpellbook(wrapped, ...args) {
@@ -87,7 +87,23 @@ export const renameSpellbookHeadings = function (sheet, html, actor) {
     const powerUsage = localise("PowerUsage");
     const powerTarget = localise("PowerTarget");
 
-    if (sheet.constructor.name == CUSTOM_SHEETS.TIDY5E) {
+    if (sheet.constructor.name == CUSTOM_SHEETS.DEFAULT) {
+        for (const actorClass of Object.values(actor.classes).filter(c => c.system.spellcasting.progression == 'talent')) {
+            log.debug("Replacing spellcasting heading for class", actorClass);
+            const spellcastingHeadingText = game.i18n.format("DND5E.SpellcastingClass", { class: actorClass.name });
+            const spellcastingHeading = html.find(`.tab.spells .spellcasting.card .header h3:contains('${spellcastingHeadingText}')`);
+            const psionicsHeadingText = game.i18n.format(`${KEY}.PsionicsClass`, { class: actorClass.name });
+            spellcastingHeading.text(psionicsHeadingText);
+
+            const spellDc = spellcastingHeading.parent().siblings(".info").find(".save .label");
+            const powerDcText = localise("PowerDC");
+            spellDc.text(powerDcText);
+        }
+
+        const school = html.find(".tab.spells .spells-list .items-section[" + $.escapeSelector("data-preparation.mode") + "='talent'] .header .item-school");
+        const specialtyText = localise("PowerSpecialty.Specialty");
+        school.text(specialtyText);
+    } else if (sheet.constructor.name == CUSTOM_SHEETS.TIDY5E) {
         const powerRange = localise("PowerRange");
         const headerLabels = html.find(".tab.spellbook li.spellbook-header div.items-header-labels");
         headerLabels.children(".items-header-comps").hide();

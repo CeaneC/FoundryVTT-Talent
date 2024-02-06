@@ -8,6 +8,8 @@
                 "strainHint": "What you would like Strain to be called",
                 "total": "Total Strain Name",
                 "totalHint": "What you would like the total amount of Strain to be called",
+                "maximum": "Maximum Strain Name",
+                "maximumMint": "What you would like the maximum amount of Strain to be called",
                 "body": "Body Strain Name",
                 "bodyHint": "What you would like Body Strain to be called",
                 "mind": "Mind Strain Name",
@@ -17,7 +19,11 @@
             }
         },
 
+        "Talent": "Talent",
+        "PsionicsClass": "{class} Psionics",
+
         "Power": "Power",
+        "PowerDC": "Power DC",
         "PowerTypeLabel": "power",
 
         "PowerOrder0": "1st Order",
@@ -36,6 +42,7 @@
         "AbilityUseManifest": "Manifest Power",
 
         "PowerSpecialty": {
+            "Specialty": "Specialty",
             "Header": "Power Specialty",
             "Chronopathy": "Chronopathy",
             "Metamorphosis": "Metamorphosis",
@@ -55,13 +62,14 @@
 
         "StrainLabels": {
             "total": "Total Strain",
+            "maximum": "Strain Maximum",
             "body": "Body Strain",
             "mind": "Mind Strain",
             "soul": "Soul Strain"
         },
 
         "StrainTable": {
-            "HeaderSuffix": " Effects",
+            "Header": "{type} Effects",
             "body": {
                 "1": "Disadvantage on Strength and Dexterity checks",
                 "2": "No effect",

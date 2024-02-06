@@ -1,54 +1,69 @@
-<div class="tab strain" data-tab="strain" >
-{{!-- <div style="border-top: 2px groove #eeede0; overflow-y: scroll; height: 50%"> --}}
-    <div>
-        <ul class="attributes flexrow" style="flex-wrap:wrap-reverse">
-            {{#each resources as |resource|}}
-                <li class="attribute resource">
-                    <h4 class="attribute-name box-title">{{resource.label}}</h4>
-                    <div class="attribute-value">
-                        <input type="number"
-                        name="flags.ceane-talent.strain.{{resource.type}}"
-                        value="{{resource.value}}"
-                        min="0"
-                        max="{{plus resource.value ../remaining_strain}}" />
-                    </div>
-                </li>
-            {{/each}}
-            <li class="attribute resource" style="flex:1 0 100%">
-                <h4 class="attribute-name box-title">{{total_strain_label}}</h4>
-                <div class="attribute-value">
-                    <input type="number" min="0" value="{{total_strain}}" disabled />
-                    <span class="sep"> / </span>
-                    <input type="number" value="{{max_strain}}" disabled>
+<div class="tab strain" data-group="primary" data-tab="strain" >
+    <section class="items-list">
+        <div>
+            <div class="lozenges strain-total">
+                <div class="lozenge">
+                    <div class="value max">{{total_strain}}</div>
+                    <div class="label roboto-condensed-upper">{{total_strain_label}}</div>
                 </div>
-            </li>
-        </ul>
-    </div>
-    <table>
-        <tbody>
+                <div class="lozenge">
+                    <div class="value max">{{max_strain}}</div>
+                    <div class="label roboto-condensed-upper">{{maximum_strain_label}}</div>
+                </div>
+            </div>
+            <div class="lozenges">
+                {{#each resources as |resource|}}
+                    <div class="lozenge">
+                        {{!-- <div class="value">{{resource.value}}</div> --}}
+                        <input type="number"
+                            name="flags.ceane-talent.strain.{{resource.type}}"
+                            value="{{resource.value}}"
+                            min="0"
+                            max="{{plus resource.value ../remaining_strain}}" />
+                        <div class="label roboto-condensed-upper">{{resource.label}}</div>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+        <div class="items-section card">
             {{#each rows as |row|}}
-                <tr>
-                    {{#each row.cells as |cell|}}
-                        {{#if (eq row.i 0)}}
-                            <th>{{cell.header}}</th>
-                        {{else}}
-                            <td>
+                {{#if (eq row.i 0)}}
+                    <div class="items-header header">
+                        {{#each row.cells as |cell|}}
+                            {{#if (eq row.i 0)}}
                                 {{#if (eq cell.type "strain")}}
-                                    {{row.i}}
+                                    <h3 class="item-name number">{{cell.header}}</h3>
                                 {{else}}
-                                    <label class="strain-label {{#if cell.disabled}}disabled{{/if}}">
-                                        <input type="hidden" name="{{cell.type}}" value={{row.i}} />
-                                        <a class="strain-toggle {{#if cell.disabled}}disabled{{/if}}">
-                                            <i class="{{#if cell.enabled}}fas fa-check{{else}}far fa-circle{{/if}}"></i>
-                                        </a>
-                                        {{cell.label}}
-                                    </label>
+                                    <div class="item-header">{{cell.header}}</div>
                                 {{/if}}
-                            </td>
-                        {{/if}}
-                    {{/each}}
-                </tr>
+                            {{/if}}
+                        {{/each}}
+                    </div>
+                {{/if}}
             {{/each}}
-        </tbody>
-    </table>
+            <ol class="item-list unlist">
+                {{#each rows as |row|}}
+                    {{#unless (eq row.i 0)}}
+                        <li class="item">
+                            {{#each row.cells as |cell|}}
+                                {{#if (eq cell.type "strain")}}
+                                    <div class="number">{{row.i}}</div>
+                                {{else}}
+                                    <div class="strain-entry">
+                                        <label class="strain-label {{#if cell.disabled}}disabled{{/if}}">
+                                            <input type="hidden" name="{{cell.type}}" value={{row.i}} />
+                                            <a class="strain-toggle {{#if cell.disabled}}disabled{{/if}}">
+                                                <i class="{{#if cell.enabled}}fas{{else}}far{{/if}} fa-circle"></i>
+                                                <div>{{cell.label}}</div>
+                                            </a>
+                                        </label>
+                                    </div>
+                                {{/if}}
+                            {{/each}}
+                        </li>
+                    {{/unless}}
+                {{/each}}
+            </ol>
+        </div>
+    </section>
 </div>

@@ -16,10 +16,12 @@ export function createSpellSlotOptions(wrapped, ...args) {
  * @private
  */
 function createPowerOrderOptions(actor, order) {
+    log.debug("createPowerOrderOptions", actor, order)
     if (actor.classes.talent === undefined || order === 1) {
         return [];
     }
 
+    log.debug("createPowerOrderOptions: Actor is a talent manifesting >1st order")
     // Determine which orders are feasible
     let maxOrder = Math.ceil(actor.classes.talent.system.levels / 4) + 1;
     const powerOrders = Array.fromRange(maxOrder + 1).reduce((arr, i) => {
@@ -34,6 +36,8 @@ function createPowerOrderOptions(actor, order) {
         });
         return arr;
     }, []);
+
+    log.debug("createPowerOrderOptions: Feasible orders are", powerOrders);
 
     return powerOrders;
 }

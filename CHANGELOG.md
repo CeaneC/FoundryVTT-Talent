@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.0
+
+* Update to support D&D5e 3.0.0's new default sheet - now requires 3.0.0 as a minimum version
+    * Power specialties now have icons, courtesy of https://game-icons.net
+    * The Strain tab comes immediately after the spellbook, instead of at the end
+    * Added a new spellcasting progression for talents (which is effectively 0 slots per level) so the spellcasting card appears in the spellbook
+    * "Talent Spellcasting" gets renamed to "Talent Psionics" on the Spellcasting tab
+
 ## 1.2.2
 
 * Fix a bug where opening a non-talent's sheet would result in just the actor's image being visible with nothing else
