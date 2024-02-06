@@ -119,7 +119,7 @@ jobs:
             module.json                          \
             README.md                            \
             CHANGELOG.md                         \
-            images                               \
+            icons                                \
             templates/                           \
             scripts/                             \
             styles/                              \
