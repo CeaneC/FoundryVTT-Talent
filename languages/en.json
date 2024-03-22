@@ -9,7 +9,7 @@
                 "total": "Total Strain Name",
                 "totalHint": "What you would like the total amount of Strain to be called",
                 "maximum": "Maximum Strain Name",
-                "maximumMint": "What you would like the maximum amount of Strain to be called",
+                "maximumHint": "What you would like the maximum amount of Strain to be called",
                 "body": "Body Strain Name",
                 "bodyHint": "What you would like Body Strain to be called",
                 "mind": "Mind Strain Name",

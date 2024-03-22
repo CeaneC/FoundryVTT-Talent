@@ -115,7 +115,12 @@ function registerSettings() {
 }
 
 const setupPowerSpecialties = function () {
-    CONFIG.DND5E.spellPreparationModes['talent'] = localise("SpellPrepTalent");
+    const talentPreparation = {
+        label: localise("SpellPrepTalent"),
+        upcast: true,
+        cantrips: true
+    }
+    CONFIG.DND5E.spellPreparationModes['talent'] = talentPreparation;
     CONFIG.DND5E.spellUpcastModes.push('talent');
     
     CONFIG.DND5E.spellcastingTypes.leveled.progression['talent'] = {
