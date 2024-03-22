@@ -1,62 +1,7 @@
-import { getOrderName, localise, spellLevelToOrder } from './utils.js';
+import { localise, spellLevelToOrder } from './utils.js';
 import { log } from "./module.js";
 
-export function createSpellSlotOptions(wrapped, ...args) {
-    log.debug("createSpellSlotOptions", ...args);
-    let result = createPowerOrderOptions(...args).concat(wrapped(...args));
-    log.debug("getPowerData result: ", result);
-    return result;
-}
-
-/**
- *
- * @param {dnd5e.documents.Actor5e} actor   The actor with spell slots.
- * @param {number} order    The minimum order the power can be manifested at
- * @returns {object[]}      Array of spell slot select options.
- * @private
- */
-function createPowerOrderOptions(actor, order) {
-    log.debug("createPowerOrderOptions", actor, order)
-    if (actor.classes.talent === undefined || order === 1) {
-        return [];
-    }
-
-    log.debug("createPowerOrderOptions: Actor is a talent manifesting >1st order")
-    // Determine which orders are feasible
-    let maxOrder = Math.ceil(actor.classes.talent.system.levels / 4) + 1;
-    const powerOrders = Array.fromRange(maxOrder + 1).reduce((arr, i) => {
-        if (i < order) return arr;
-        const label = getOrderName(i);
-        arr.push({
-            key: `power${i}`,
-            level: i,
-            label: label,
-            canCast: true,
-            hasSlots: true
-        });
-        return arr;
-    }, []);
-
-    log.debug("createPowerOrderOptions: Feasible orders are", powerOrders);
-
-    return powerOrders;
-}
-
 export const renderUsePowerDialog = function(dialog, html) {
-    if (dialog.item.system.preparation.mode !== 'talent') {
-        if (dialog.item.actor.classes.talent !== undefined) {
-            // Remove orders from upcasting options
-            html.find(`form div.form-fields select[name="slotLevel"] option`).map((i, e) => {
-                const option = $(e)
-                if (option.prop("value").startsWith("power")) {
-                    return option.remove();
-                }
-            });
-        }
-
-        return;
-    }
-
     log.debug('renderUsePowerDialog', dialog, html);
 
     const spellHint = game.i18n.format("DND5E.AbilityUseHint", {
@@ -83,16 +28,6 @@ export const renderUsePowerDialog = function(dialog, html) {
         const element = $(e)
         let newText = element.text().replace(castLevel, manifestAtOrder);
         return element.text(newText);
-    });
-    // Remove spell slots from the upcasting options
-    html.find(`form div.form-fields select[name="slotLevel"] option`).map((i, e) => {
-        const option = $(e)
-        let value = option.prop("value");
-        if (value.startsWith("power")) {
-            return option.prop("value", value.replace("power", "spell"));
-        } else {
-            return option.remove();
-        }
     });
 
     // Tidy5e Sheet: Remove icons for available spell slots

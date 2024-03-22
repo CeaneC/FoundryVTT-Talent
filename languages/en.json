@@ -101,5 +101,12 @@
                 "8": "No effect"
             }
         }
+    },
+    "DND5E": {
+        "SpellLevelTalent2": "2nd Order",
+        "SpellLevelTalent3": "3rd Order",
+        "SpellLevelTalent4": "4th Order",
+        "SpellLevelTalent5": "5th Order",
+        "SpellLevelTalent6": "6th Order"
     }
 }
