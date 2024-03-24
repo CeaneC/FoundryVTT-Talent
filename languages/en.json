@@ -9,7 +9,7 @@
                 "total": "Total Strain Name",
                 "totalHint": "What you would like the total amount of Strain to be called",
                 "maximum": "Maximum Strain Name",
-                "maximumMint": "What you would like the maximum amount of Strain to be called",
+                "maximumHint": "What you would like the maximum amount of Strain to be called",
                 "body": "Body Strain Name",
                 "bodyHint": "What you would like Body Strain to be called",
                 "mind": "Mind Strain Name",
@@ -101,5 +101,12 @@
                 "8": "No effect"
             }
         }
+    },
+    "DND5E": {
+        "SpellLevelTalent2": "2nd Order",
+        "SpellLevelTalent3": "3rd Order",
+        "SpellLevelTalent4": "4th Order",
+        "SpellLevelTalent5": "5th Order",
+        "SpellLevelTalent6": "6th Order"
     }
 }

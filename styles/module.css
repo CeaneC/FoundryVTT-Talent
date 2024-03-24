@@ -41,6 +41,18 @@
         drop-shadow(0 0 6px var(--dnd5e-shadow-45));
 }
 
+.dnd5e-theme-dark .dnd5e2.sheet.actor .tab.strain .lozenge::before {
+    content: "";
+    position: absolute;
+    width: 68px;
+    height: 30px;
+    background: transparent url(../../../systems/dnd5e/ui/lozenge.svg) no-repeat top center / contain;
+    background-size: cover;
+    z-index: 0;
+    filter:
+        drop-shadow(0 0 6px var(--dnd5e-shadow-45));
+}
+
 .dnd5e2.sheet.actor .tab.strain .lozenge .value {
     font-family: var(--dnd5e-font-roboto-slab);
     font-size: 20px;
@@ -66,6 +78,10 @@
     z-index: 1;
 }
 
+.dnd5e-theme-dark .dnd5e2.sheet.actor .tab.strain .lozenge input {
+    color: var(--color-text-light-0);
+}
+
 .dnd5e2.sheet.actor .tab.strain .lozenge input:hover {
     box-shadow: 0 0 6px var(--dnd5e-color-gold);
 }
@@ -75,10 +91,17 @@
     text-shadow: 0 0 4px var(--dnd5e-shadow-15);
 }
 
+.dnd5e-theme-dark .dnd5e2.sheet.actor .tab.strain .lozenge .value.max {
+    color: var(--color-text-light-3);
+}
 
 .dnd5e2.sheet.actor .tab.strain .lozenge .label {
     font-size: 11px;
     white-space: nowrap;
+}
+
+.dnd5e-theme-dark .dnd5e2.sheet.actor .tab.strain .lozenge .label {
+    color: var(--dnd5e-color-gold);
 }
 
 .dnd5e2.sheet.actor .tab.strain .item-header {

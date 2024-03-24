@@ -1,4 +1,4 @@
-import { createSpellSlotOptions, renderUsePowerDialog } from "./power-use-dialog.js";
+import { renderUsePowerDialog } from "./power-use-dialog.js";
 import { preDisplayPowerCard, renderRsr5ePower } from "./chat-card.js";
 import { addStrainTab, STRAIN_TYPES } from "./strain-tab.js";
 import { getSpellbook, renameSpellbookHeadings } from './spellbook.js';
@@ -115,15 +115,44 @@ function registerSettings() {
 }
 
 const setupPowerSpecialties = function () {
-    CONFIG.DND5E.spellPreparationModes['talent'] = localise("SpellPrepTalent");
-    CONFIG.DND5E.spellUpcastModes.push('talent');
-    
-    CONFIG.DND5E.spellcastingTypes.leveled.progression['talent'] = {
-        label: localise("Talent"),
-        divisor: 21
-    }
-
-    CONFIG.DND5E.spellProgression['talent'] = localise("Talent");
+    // Add a spellcasting type for each power order. Need a blank string to create the computeTalentProgression and prepareTalentSlots hooks.
+    ["", 2, 3, 4, 5, 6].forEach(l => {
+        let key = `talent${l}`;
+        CONFIG.DND5E.spellcastingTypes[key] = { label: localise("SpellPrepTalent") };
+    });
+    CONFIG.DND5E.spellProgression.talent = localise("Talent");
+    CONFIG.DND5E.spellPreparationModes.talent = {
+        label: localise("SpellPrepTalent"),
+        upcast: true,
+        cantrips: true
+    };
+    CONFIG.DND5E.talentCastingProgression = {
+        1: [
+            { slots: 1, level: 2 }
+        ],
+        5: [
+            { slots: 1, level: 2 },
+            { slots: 1, level: 3 }
+        ],
+        9: [
+            { slots: 1, level: 2 },
+            { slots: 1, level: 3 },
+            { slots: 1, level: 4 }
+        ],
+        13: [
+            { slots: 1, level: 2 },
+            { slots: 1, level: 3 },
+            { slots: 1, level: 4 },
+            { slots: 1, level: 5 }
+        ],
+        17: [
+            { slots: 1, level: 2 },
+            { slots: 1, level: 3 },
+            { slots: 1, level: 4 },
+            { slots: 1, level: 5 },
+            { slots: 1, level: 6 }
+        ]
+    };
 
     for (const [key, value] of Object.entries(POWER_SPECIALTIES)) {
         console.log("Power specialty", key, value);
@@ -131,13 +160,38 @@ const setupPowerSpecialties = function () {
     }
 };
 
+Hooks.on('dnd5e.computeTalentProgression', (progression, actor, cls, spellcasting, count) => {
+    progression.talent ??= 0;
+    progression.talent += cls.system.levels;
+});
+
+Hooks.on('dnd5e.prepareTalentSlots', (spells, actor, progression) => {
+    let talentLevel = Math.clamped(progression.talent, 0, CONFIG.DND5E.maxLevel);
+
+    if (talentLevel === 0 && actor.type === 'npc')
+        talentLevel = actor.system.details.spellLevel;
+
+    const [, talentConfig] = Object.entries(CONFIG.DND5E.talentCastingProgression).reverse().find(([l]) => Number(l) <= talentLevel) ?? [];
+
+    if (talentConfig) {
+        talentConfig.forEach(power => {
+            let key = `talent${power.level}`
+            spells[key] ??= {};
+            spells[key].level = power.level;
+            spells[key].max = power.slots;
+            spells[key].value = 1;
+        });
+    }
+
+    log.debug("dnd5e.prepareTalentSlots completed. New spells:", spells);
+});
+
 Hooks.once('ready', () => {
     console.log(`${NAME} | Readying ${KEY}`);
     if (!game.modules.get('lib-wrapper')?.active && game.user.isGM) {
         ui.notifications.error(`Module ${KEY} requires the 'libWrapper' module. Please install and activate it.`);
     } else {
         libWrapper.register(KEY, 'game.dnd5e.applications.actor.ActorSheet5eCharacter.prototype._prepareSpellbook', getSpellbook, 'WRAPPER');
-        libWrapper.register(KEY, 'game.dnd5e.applications.item.AbilityUseDialog._createSpellSlotOptions', createSpellSlotOptions, 'WRAPPER');
     }
 
     // Run this module's renderAbilityUseDialog hook after any other modules'
@@ -145,7 +199,7 @@ Hooks.once('ready', () => {
     let index = events.findIndex(h => h.id == renderAbilityUseDialogHookId);
     let renderAbilityUseDialogHook = events.splice(index, 1)[0];
     events.push(renderAbilityUseDialogHook);
-})
+});
 
 let setupComplete = false;
 
