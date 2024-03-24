@@ -3,6 +3,7 @@
 ## 1.3.2
 * Add support for D&D5e 3.1.0's Dark Theme
 * Fix Talent Power spell preparation mode showing up blank
+    * Uses the new spellcastingTypes/spellPreparationModes. (Implementation is a little bit janky since it's designed for Pact-type casting)
 * Fix localisation tooltip for maximum strain name in configuration options
 
 ## 1.3.1

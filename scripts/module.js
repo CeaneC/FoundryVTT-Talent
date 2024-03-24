@@ -125,7 +125,6 @@ const setupPowerSpecialties = function () {
         label: localise("SpellPrepTalent"),
         upcast: true,
         cantrips: true
-        //order: 0.2011251420
     };
     CONFIG.DND5E.talentCastingProgression = {
         1: [
