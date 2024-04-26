@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.3
+
+* Fix a bug where all spells would say "Manifest at Order" instead of just talent powers, and spells would lose the "Consume slot" checkbox
+
 ## 1.3.2
 * Add support for D&D5e 3.1.0's Dark Theme
 * Fix Talent Power spell preparation mode showing up blank

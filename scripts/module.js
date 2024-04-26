@@ -54,7 +54,7 @@ const updateDebug = () => {
 };
 
 let renderAbilityUseDialogHookId = Hooks.on("renderAbilityUseDialog", (dialog, html, formData) => {
-    renderUsePowerDialog(dialog, html);
+    renderUsePowerDialog(dialog, html, formData);
 });
 
 Hooks.once('i18nInit', () => {
