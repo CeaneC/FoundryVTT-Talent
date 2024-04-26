@@ -1,8 +1,11 @@
 import { localise, spellLevelToOrder } from './utils.js';
 import { log } from "./module.js";
 
-export const renderUsePowerDialog = function(dialog, html) {
-    log.debug('renderUsePowerDialog', dialog, html);
+export const renderUsePowerDialog = function(dialog, html, formData) {
+    log.debug('renderUsePowerDialog', dialog, html, formData);
+
+    if (dialog.item.system.preparation.mode !== 'talent')
+        return;
 
     const spellHint = game.i18n.format("DND5E.AbilityUseHint", {
         type: game.i18n.localize(CONFIG.Item.typeLabels[dialog.item.type]),
