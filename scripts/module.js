@@ -165,6 +165,12 @@ Hooks.on('dnd5e.computeTalentProgression', (progression, actor, cls, spellcastin
     progression.talent += cls.system.levels;
 });
 
+
+Hooks.on('dnd5e.buildTalentSpellcastingTable', (table, item, spellcasting) => {
+    table.headers ??= ["F"];
+    table.cols ??= [ { class: 'spellcasting', span: 0 } ]
+});
+
 Hooks.on('dnd5e.prepareTalentSlots', (spells, actor, progression) => {
     let talentLevel = Math.clamped(progression.talent, 0, CONFIG.DND5E.maxLevel);
 
@@ -245,6 +251,8 @@ Hooks.on("dnd5e.prepareLeveledSlots", (spells, actor, slots) => {
 })
 
 function saveActorIdOnStrainTab(actor) {
+    if (!actor) return;
+
     if (actor.sheet._tabs[0]?.active == 'strain') {
         lastUpdatedStrainActorId = actor._id;
     } else {
