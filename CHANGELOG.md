@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.0
+
+* Add Psionic Exertions as a Class Feature Type
+* Fix a bug where Class Summary journals would throw errors when opened
+* Fix a bug where the Class Summary journal of a Talent wouldn't open
+
 ## 1.3.3
 
 * Fix a bug where all spells would say "Manifest at Order" instead of just talent powers, and spells would lose the "Consume slot" checkbox

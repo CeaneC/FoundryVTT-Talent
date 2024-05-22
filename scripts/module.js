@@ -57,8 +57,13 @@ let renderAbilityUseDialogHookId = Hooks.on("renderAbilityUseDialog", (dialog, h
     renderUsePowerDialog(dialog, html, formData);
 });
 
-Hooks.once('i18nInit', () => {
+Hooks.once('init', () => {
     console.log(`${NAME} | Initialising ${KEY}`);
+    CONFIG.DND5E.featureTypes.class.subtypes['psionicExertion'] = `${KEY}.PsionicExertion`;
+});
+
+Hooks.once('i18nInit', () => {
+    console.log(`${NAME} | Initialising Internationalisation ${KEY}`);
     registerSettings();
     updateDebug();
     setupPowerSpecialties();
@@ -165,6 +170,12 @@ Hooks.on('dnd5e.computeTalentProgression', (progression, actor, cls, spellcastin
     progression.talent += cls.system.levels;
 });
 
+
+Hooks.on('dnd5e.buildTalentSpellcastingTable', (table, item, spellcasting) => {
+    table.headers ??= [""];
+    table.cols ??= [ { class: 'spellcasting', span: 0 } ]
+});
+
 Hooks.on('dnd5e.prepareTalentSlots', (spells, actor, progression) => {
     let talentLevel = Math.clamped(progression.talent, 0, CONFIG.DND5E.maxLevel);
 
@@ -245,6 +256,8 @@ Hooks.on("dnd5e.prepareLeveledSlots", (spells, actor, slots) => {
 })
 
 function saveActorIdOnStrainTab(actor) {
+    if (!actor) return;
+
     if (actor.sheet._tabs[0]?.active == 'strain') {
         lastUpdatedStrainActorId = actor._id;
     } else {
