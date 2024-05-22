@@ -57,8 +57,13 @@ let renderAbilityUseDialogHookId = Hooks.on("renderAbilityUseDialog", (dialog, h
     renderUsePowerDialog(dialog, html, formData);
 });
 
-Hooks.once('i18nInit', () => {
+Hooks.once('init', () => {
     console.log(`${NAME} | Initialising ${KEY}`);
+    CONFIG.DND5E.featureTypes.class.subtypes['psionicExertion'] = `${KEY}.PsionicExertion`;
+});
+
+Hooks.once('i18nInit', () => {
+    console.log(`${NAME} | Initialising Internationalisation ${KEY}`);
     registerSettings();
     updateDebug();
     setupPowerSpecialties();
@@ -167,7 +172,7 @@ Hooks.on('dnd5e.computeTalentProgression', (progression, actor, cls, spellcastin
 
 
 Hooks.on('dnd5e.buildTalentSpellcastingTable', (table, item, spellcasting) => {
-    table.headers ??= ["F"];
+    table.headers ??= [""];
     table.cols ??= [ { class: 'spellcasting', span: 0 } ]
 });
 
