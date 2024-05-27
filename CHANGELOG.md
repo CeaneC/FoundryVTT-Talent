@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.1
+
+* Fix missing localisation for Psionic Exertion
+
 ## 1.4.0
 
 * Add Psionic Exertions as a Class Feature Type
